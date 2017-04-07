@@ -6,27 +6,51 @@
         defaults: {
             title: 'do something!',
             completed: false
-        },
-        validate: function(attrs) {
-            if ( _.isEmpty(attrs.title) ) {
-                return 'title must not be empty!'
-            }
-        },
-        toggle: function() {
-            this.set('completed', !this.get('completed'));
+        }
+    });
+    var task = new Task();
+    
+    // View
+    
+    var TaskView = Backbone.View.extend({
+        tagName: 'li',
+        template: _.template( $('#task-template').html() ),
+        render: function() {
+            var template = this.template( this.model.toJSON() );
+            this.$el.html(template);
+            return this;
+        }
+    });
+
+    // Collection
+    var Tasks = Backbone.Collection.extend({
+        model: Task
+    });
+    
+    var TasksView = Backbone.View.extend({
+        tagName: 'ul',
+        render: function() {
+            this.collection.each(function(task) {
+                var taskView = new TaskView({model: task});
+                this.$el.append(taskView.render().el);
+            }, this);
+            return this;
         }
     });
     
-    var task1 = new Task({
-        completed: true
-    });
-    
-//    task1.set('title', 'newTitle')
-//    var title = task1.get('title');
-//    console.log(title);
-    
-    console.log(task1.toJSON());
-    task1.set({title: ''}, {validate: true});
-//    task1.toggle();
-    console.log(task1.toJSON());
+    var tasks = new Tasks([
+        {
+            title: 'task1',
+            completed: true
+        },
+        {
+            title: 'task2'
+        },
+        {
+            title: 'task3'
+        }
+    ]);
+//    console.log(tasks.toJSON());
+    var tasksView = new TasksView({collection: tasks});
+    $('#tasks').html(tasksView.render().el);
 })();
