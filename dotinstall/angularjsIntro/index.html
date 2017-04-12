@@ -4,8 +4,17 @@
     <meta charset="utf-8">
     <title>Angular.jsの練習</title>
     <script src="https://code.angularjs.org/1.0.1/angular-1.0.1.min.js"></script>
+    <script src="myscript.js"></script>
 </head>
 <body>
     <h1>Angular.jsの練習</h1>
+    <div ng-controller="mainController">
+    <ul>
+        <li ng-repeat="user in users" ng-controller="userItemController">
+            {{user.name}} {{user.score}}
+            <button ng-click="increment()">+1</button>
+        </li>
+    </ul>
+    </div>
 </body>
 </html>
