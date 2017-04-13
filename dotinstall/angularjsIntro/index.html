@@ -10,18 +10,15 @@
     <h1>Angular.jsの練習</h1>
     <div ng-controller="mainController">
     <form novalidate name="myForm" ng-submit="addUser()">
-    <p>18+:
-        <input type="checkbox" ng-model="user.adult" 
-            ng-true-value="adult" ng-false-value="child">
+    
+    <p>Color:
+        <select 
+            ng-model="user.color" 
+            ng-options="'label:'+color for color in ['red', 'blue', 'pink']"
+            ng-init="user.color='red'">
+        </select>
     </p>
-    <p>Phone:
-        <input type="radio" ng-model="user.phone" value="iPhone">iphone
-        <input type="radio" ng-model="user.phone" value="Android">Android
-    </p>
-    <p>Memo:
-        <textarea ng-model="user.memo" ng-maxlength="140">
-        </textarea>{{140-user.memo.length}}
-    </p>
+    
     <p><input type="submit" value="add"></p>
     <pre>{{user|json}}</pre>
     </form>
