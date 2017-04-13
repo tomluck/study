@@ -9,12 +9,27 @@
 <body>
     <h1>Angular.jsの練習</h1>
     <div ng-controller="mainController">
-    <ul>
-        <li ng-repeat="user in users" ng-controller="userItemController">
-            {{user.name}} {{user.score}}
-            <button ng-click="increment()">+1</button>
-        </li>
-    </ul>
+    <form novalidate name="myForm" ng-submit="addUser()">
+    <p>Name:
+        <input type="text" name="name" ng-model="user.name" required ng-minlength="5" ng-maxlength="8">
+        <span ng-show="myForm.name.$error.required">Required!</span>
+        <span ng-show="myForm.name.$error.minlength">Too Short!</span>
+        <span ng-show="myForm.name.$error.maxlength">Too Long!</span>
+    </p>
+    <p>Score:
+        <input type="number" name="score" ng-model="user.score">
+    </p>
+    <p>Email:
+        <input type="email" name="email" ng-model="user.email">
+        <span ng-show="myForm.email.$error.email">Not valid email!</span>
+    </p>
+    <p>Web:
+        <input type="url" name="url" ng-model="user.url">
+        <span ng-show="myForm.url.$error.url">Not valid Web url!</span>
+    </p>
+    <p><input type="submit" value="add"></p>
+    <pre>{{user|json}}</pre>
+    </form>
     </div>
 </body>
 </html>
