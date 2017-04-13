@@ -10,22 +10,17 @@
     <h1>Angular.jsの練習</h1>
     <div ng-controller="mainController">
     <form novalidate name="myForm" ng-submit="addUser()">
-    <p>Name:
-        <input type="text" name="name" ng-model="user.name" required ng-minlength="5" ng-maxlength="8">
-        <span ng-show="myForm.name.$error.required">Required!</span>
-        <span ng-show="myForm.name.$error.minlength">Too Short!</span>
-        <span ng-show="myForm.name.$error.maxlength">Too Long!</span>
+    <p>18+:
+        <input type="checkbox" ng-model="user.adult" 
+            ng-true-value="adult" ng-false-value="child">
     </p>
-    <p>Score:
-        <input type="number" name="score" ng-model="user.score">
+    <p>Phone:
+        <input type="radio" ng-model="user.phone" value="iPhone">iphone
+        <input type="radio" ng-model="user.phone" value="Android">Android
     </p>
-    <p>Email:
-        <input type="email" name="email" ng-model="user.email">
-        <span ng-show="myForm.email.$error.email">Not valid email!</span>
-    </p>
-    <p>Web:
-        <input type="url" name="url" ng-model="user.url">
-        <span ng-show="myForm.url.$error.url">Not valid Web url!</span>
+    <p>Memo:
+        <textarea ng-model="user.memo" ng-maxlength="140">
+        </textarea>{{140-user.memo.length}}
     </p>
     <p><input type="submit" value="add"></p>
     <pre>{{user|json}}</pre>
