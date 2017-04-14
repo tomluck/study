@@ -55,6 +55,7 @@ var TasksView = Backbone.View.extend({
         this.collection.on('add', this.addNew, this);
         this.collection.on('change', this.updateCount, this);
         this.collection.on('destroy', this.updateCount, this);
+        this.collection.on('remove', this.removeModel, this);
     },
     addNew: function(task) {
         var taskView = new TaskView({model: task});
@@ -63,11 +64,17 @@ var TasksView = Backbone.View.extend({
         this.updateCount();
     },
     updateCount: function() {
-        var uncompletedTasks = this.collection.filter(function(task) {
-            return !task.get('completed');
+        var completedTasks = this.collection.filter(function(task) {
+            return task.get('completed');
         });
-        $('#count').html(uncompletedTasks.length);
+        $('#count').html(completedTasks.length);
+        $('#total').html(this.collection.length);
     },
+    // original method
+    removeModel: function(model) {
+        model.destroy();
+    },
+    
     render: function() {
         this.collection.each(function(task) {
             var taskView = new TaskView({model: task});
@@ -93,21 +100,37 @@ var AddTaskView = Backbone.View.extend({
     }
 });
 
+// original View
+var DeleteDoneView = Backbone.View.extend({
+    el: '#deleteDone', // already exist tag
+    events: {
+        'click #deleteFinished': 'onClick'
+    },
+    
+    onClick: function(e) {
+        this.collection.remove(this.collection.where({completed: true}));
+    }
+});
+
 var tasks = new Tasks([
     {
-        title: 'task1',
-        completed: true
+        title: 'task1'
     },
     {
         title: 'task2'
     },
     {
-        title: 'task3'
+        title: 'task3',
+        completed: true
+    },
+    {
+        title: 'task4'
     }
 ]);
 
 var tasksView = new TasksView({collection: tasks});
 var addTaskView = new AddTaskView({collection: tasks});
+var deleteDoneView = new DeleteDoneView({collection: tasks});
 $('#tasks').html(tasksView.render().el);
 
 })();

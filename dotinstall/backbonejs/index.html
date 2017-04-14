@@ -11,16 +11,14 @@
     </style>
 </head>
 <body>
-    <h1>Tasks</h1>
+    <h1>ToDo list</h1>
+    <p>Finished Task: <span id="count"></span> / <span id="total"></span></p>
+    <div id="deleteDone">
+        <button id="deleteFinished">Delete Finished</button>
+    </div>
     
-    <form id="addTask">
-        <input type="text" id="title">
-        <input type="submit" value="add">
-        <span id="error"></span>
-    </form>
     <div id="tasks">
     </div>
-    <p>Tasks left: <span id="count"></span></p>
 
     <script type="text/template" id="task-template">
         <input type="checkbox" class="toggle" <%= completed ? 'checked': '' %>>
@@ -29,6 +27,12 @@
         </span>
         <span class="delete">[x]</span>
     </script>
+    
+    <form id="addTask">
+        <input type="text" id="title">
+        <input type="submit" value="add">
+        <span id="error"></span>
+    </form>
     
     <script src="js/underscore.js"></script>
     <script src="js/jquery.js"></script>
