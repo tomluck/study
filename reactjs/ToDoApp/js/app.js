@@ -38,6 +38,7 @@ var TodoApp = React.createClass({
     render: function(){
       return (
         <div className="TodoApp">
+            <TodoCounter todos={this.state.todos} />
             <TodoList todos={this.state.todos} onChange={this.onChange}/>
             <TodoCreator onAdd={this.onAdd}/>
         </div>
@@ -46,6 +47,24 @@ var TodoApp = React.createClass({
 });
 
 // children
+var TodoCounter = React.createClass({
+    render: function() {
+        var finished = 0;
+        this.props.todos.map(function(todo){
+            if (todo.status == 1) {
+                ++finished;
+            }
+        });
+        var total = this.props.todos.length;
+        
+        return (
+            <div className="TodoCounter">
+                <p>Finished Task: {finished} / {total} </p>
+            </div>
+        );
+    }
+});
+
 //var TodoDeletor = React.createClass({
 //    
 //});
