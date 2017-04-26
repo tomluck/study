@@ -2,7 +2,13 @@
 var TodoApp = React.createClass({
     getInitialState: function() {
         return {
-          todos : []
+          todos :
+                [
+                    {item:"task1", status:0},
+                    {item:"task2", status:0},
+                    {item:"task3", status:1},
+                    {item:"task4", status:0}
+                ]
         }
     },
     
@@ -12,6 +18,15 @@ var TodoApp = React.createClass({
         });
     },
     
+    onChange: function(i){
+        var targetTodo = this.state.todos[i];
+        var nextState = !targetTodo.status;
+        targetTodo.status = nextState;
+        this.setState({
+          todos: this.state.todos
+         });
+    },
+
     onDelete: function(i){
         var targetTodo = this.state.todos[i];
         targetTodo.status = 1;
@@ -23,14 +38,18 @@ var TodoApp = React.createClass({
     render: function(){
       return (
         <div className="TodoApp">
+            <TodoList todos={this.state.todos} onChange={this.onChange}/>
             <TodoCreator onAdd={this.onAdd}/>
-            <TodoList todos={this.state.todos} onDelete={this.onDelete}/>
         </div>
       );
     }
 });
 
-// child 1
+// children
+//var TodoDeletor = React.createClass({
+//    
+//});
+
 var TodoCreator = React.createClass({
     getInitialState: function(){
         return {
@@ -53,42 +72,49 @@ var TodoCreator = React.createClass({
     render: function(){
         return (
           <div className="TodoCreator">
-            <input type="text" value={this.state.value} ref="inputText" placeholder="Input your new todo" onChange={this._onChange}/>
+            <input type="text" value={this.state.value} ref="inputText" onChange={this._onChange}/>
             <button onClick={this._onAdd}>Add</button>
           </div>
         );
     }
 });
 
-// child 2
 var TodoList = React.createClass({
     _onDelete: function(i){
         this.props.onDelete(i);
     },
-      
+    _onChange: function(i){
+        this.props.onChange(i);
+    },
+
     render: function() {
       return (
         <ul>
         {
             this.props.todos.map(function(todo,i){
-              if (todo.status == 0) { 
+                var item = todo.item;
+                if (todo.status == 1) {
+                    item = <s>
+                            <span style={{color:'gray'}}>
+                                {todo.item}
+                            </span>
+                          </s>
+                }
                 return (
-                   <li key={i}>
-                     <input type="checkbox" 
-                       onClick={this._onDelete.bind(this, i)}/>
-                       {todo.item}
-                    </li>
-                )
-              } else {
-                return <li key={i}><s>{todo.item}</s></li>
-              }
-            },this)
+                        <li key={i}>
+                        <input type="checkbox" checked={todo.status}
+                            onChange={this._onChange.bind(this, i)}/>
+                            {item}
+                         </li>
+                         )
+        },this)
         }
         </ul>
       );
     }
 });
 
+// rendering
 React.render(
     <TodoApp />,
     document.getElementById('myApp')
