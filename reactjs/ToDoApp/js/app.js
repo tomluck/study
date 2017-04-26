@@ -29,20 +29,30 @@ var TodoApp = React.createClass({
 
     onDelete: function(i){
         var targetTodo = this.state.todos[i];
-        targetTodo.status = 1;
         this.setState({
-          todos: this.state.todos
-         });
+            todos: this.state.todos.filter(function(todo){
+                return todo.item != targetTodo.item;
+            })
+        });
+    },
+    
+    onDeleteFinished: function(){
+        this.setState({
+            todos: this.state.todos.filter(function(todo){
+                return todo.status === 0;
+            })
+        });
     },
     
     render: function(){
-      return (
+        return (
         <div className="TodoApp">
             <TodoCounter todos={this.state.todos} />
-            <TodoList todos={this.state.todos} onChange={this.onChange}/>
+            <TodoDeleter todos={this.state.todos} onDeleteFinished={this.onDeleteFinished}/>
+            <TodoList todos={this.state.todos} onChange={this.onChange} onDelete={this.onDelete}/>
             <TodoCreator onAdd={this.onAdd}/>
         </div>
-      );
+        );
     }
 });
 
@@ -65,9 +75,19 @@ var TodoCounter = React.createClass({
     }
 });
 
-//var TodoDeletor = React.createClass({
-//    
-//});
+var TodoDeleter = React.createClass({
+    _onDeleteFinished: function(){
+        this.props.onDeleteFinished();
+    },
+    
+    render: function(){
+        return (
+          <div className="TodoDeleter">
+          <button onClick={this._onDeleteFinished}>Delete Finished</button>
+          </div>
+        );
+    }
+});
 
 var TodoCreator = React.createClass({
     getInitialState: function(){
@@ -79,7 +99,7 @@ var TodoCreator = React.createClass({
     _onAdd: function(){
         var newTodo = this.refs.inputText.getDOMNode().value;
         this.props.onAdd(newTodo);
-        this.setState({value: ""});
+        this.setState({value: ""}); // clear input text value
     },
     
     _onChange: function(e){
@@ -120,12 +140,13 @@ var TodoList = React.createClass({
                           </s>
                 }
                 return (
-                        <li key={i}>
+                    <li key={i}>
                         <input type="checkbox" checked={todo.status}
                             onChange={this._onChange.bind(this, i)}/>
                             {item}
-                         </li>
-                         )
+                        <span onClick={this._onDelete.bind(this, i)}> [x] </span>
+                     </li>
+                 )
         },this)
         }
         </ul>
