@@ -2,7 +2,7 @@
 <html lang="ja" ng-app>
 <head>
     <meta charset="utf-8">
-    <title>Angular.jsの練習</title>
+    <title>TypeScript + Angular.js</title>
     <script src="https://code.angularjs.org/1.0.1/angular-1.0.1.min.js"></script>
     <script src="myscript.js"></script>
     <style>
@@ -21,7 +21,7 @@
         <li ng-repeat="task in tasks">
             <input type="checkbox" ng-model="task.done">
             <span class="done-{{task.done}}">{{task.body}}</span>
-            <a href ng-click="tasks.splice($index,1)">[x]</a>
+            <a href ng-click="deleteTask($index)">[x]</a>
         </li>
     </ul>
     <form ng-submit="addNew()">
