@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>TypeScript + Angular.js</title>
     <script src="https://code.angularjs.org/1.0.1/angular-1.0.1.min.js"></script>
-    <script src="myscript.js"></script>
+    <script src="app.js"></script>
     <style>
         .done-true {
             color:gray;
@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>Todo list</h1>
-    <div ng-controller="mainController">
+    <div ng-controller="MainController">
     <p>Finished Task: {{getDoneCount()}} / {{tasks.length}}</p>
     <button ng-click="deleteDone()">Delete Finished</button>
     <ul>
