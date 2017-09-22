@@ -1,7 +1,9 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, p, div, button)
-import Html.Events exposing (onClick)
+import Html exposing (Html, text, p, div, button, form, input)
+import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (value, type_)
+import String exposing (toInt)
 
 main : Program Never Model Msg
 main = 
@@ -14,17 +16,22 @@ main =
 --MODEL
 type alias Model = 
     { count : Int
+    , countStepInput : String
+    , countStepNum : Int
     }
 
 initModel : Model
 initModel = 
     { count = 0 
+    , countStepInput = ""
+    , countStepNum = 0
     }
 
 type Msg
     = NoOp
-    | Increase
-    | Decrease
+    | Increase Int
+    | UpdateCountStepInput String
+    | UpdateCountStepNum Int
 
 --UPDATE
 update : Msg -> Model -> Model
@@ -33,19 +40,23 @@ update msg model =
         NoOp -> 
             model
 
-        Increase ->
-            { model | count = model.count + 1 }
+        Increase num ->
+            { model | count = model.count + num }
 
-        Decrease ->
-            { model | count = model.count - 1 }
+        UpdateCountStepInput s ->
+            { model | countStepInput = s }
+
+        UpdateCountStepNum num ->
+            { model | countStepNum = num }
 
 --VIEW
 view : Model -> Html Msg
 view model = 
     div []
         [ counter model
-        , increaseButton
-        , decreaseButton
+        , increaseButton model
+        , stepInput model
+        , text ("countStepInput = " ++ model.countStepInput)
         ]
 
 counter : Model -> Html Msg
@@ -55,16 +66,25 @@ counter model =
         , text (toString model.count)
         ]
 
-increaseButton : Html Msg
-increaseButton = 
+increaseButton : Model -> Html Msg
+increaseButton model = 
     div []
-        [ button [ onClick Increase ]
-            [ text "+1" ]
+        [ button [ onClick (Increase 1) ] [ text "+1" ]
+        , button [ onClick (Increase model.countStepNum) ] [ text ("Add " ++ (toString model.countStepNum)) ]
         ]
 
-decreaseButton : Html Msg
-decreaseButton = 
-    div []
-        [ button [ onClick Decrease ]
-            [ text "-1" ]
+stepInput : Model -> Html Msg
+stepInput model = 
+    form []
+        [ input [ onInput UpdateCountStepInput, value model.countStepInput ] []
+        , input [ type_ "button", onClick (convertInputToMsg model.countStepInput), value "Update"] []
         ]
+        
+convertInputToMsg : String -> Msg
+convertInputToMsg s = 
+    case (toInt s) of
+        Ok num ->
+            UpdateCountStepNum num
+
+        Err msg ->
+            NoOp
