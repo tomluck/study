@@ -24,6 +24,7 @@ initModel =
 type Msg
     = NoOp
     | Increase
+    | Decrease
 
 --UPDATE
 update : Msg -> Model -> Model
@@ -35,12 +36,16 @@ update msg model =
         Increase ->
             { model | count = model.count + 1 }
 
+        Decrease ->
+            { model | count = model.count - 1 }
+
 --VIEW
 view : Model -> Html Msg
 view model = 
     div []
         [ counter model
-        , increaseButton            
+        , increaseButton
+        , decreaseButton
         ]
 
 counter : Model -> Html Msg
@@ -55,4 +60,11 @@ increaseButton =
     div []
         [ button [ onClick Increase ]
             [ text "+1" ]
+        ]
+
+decreaseButton : Html Msg
+decreaseButton = 
+    div []
+        [ button [ onClick Decrease ]
+            [ text "-1" ]
         ]
