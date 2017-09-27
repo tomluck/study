@@ -24,7 +24,7 @@ initialModel =
 
 type Msg
     = NoOp
-    | AddNew ToDo
+    | AddNew
 
 -- update
 update : Msg -> ToDo -> Model -> ( Model, Cmd Msg )
@@ -33,8 +33,8 @@ update message todo model =
         NoOp ->
             model ! []
 
-        AddNew todo -> 
-            ( { model | todoList = model.todoList ++ [todo] }, Cmd.none )
+        AddNew -> 
+            { model | todoList = model.todoList ++ [todo] } ! []
 
 -- view
 view : Model -> Html Msg
@@ -63,4 +63,4 @@ viewItem model =
 updateButton : List ToDo -> Html Msg
 updateButton models = 
     div [] 
-        [ button [ onClick (AddNew (ToDo 4 "item4")) ] [ text "Click" ] ]
+        [ button [ onClick AddNew ] [ text "Click" ] ]

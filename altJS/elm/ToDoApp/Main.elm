@@ -15,13 +15,13 @@ main =
 
 -- model
 type alias Model = 
-    { creator : TodoCreator.Model
+    { todoCreator : TodoCreator.Model
     , todoList : TodoList.Model
     }
 
 initialModel : Model
 initialModel = 
-    { creator = TodoCreator.initialModel
+    { todoCreator = TodoCreator.initialModel
     , todoList = TodoList.initialModel
     }
 
@@ -38,12 +38,16 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message model = 
     case message of
         TodoCreatorMsg subMsg ->
-            model ! []
+            let
+                ( updatedCreator, todoCreatorCmd ) =
+                    TodoCreator.update subMsg model.todoCreator
+            in
+                ( { model | todoCreator = updatedCreator }, Cmd.map TodoCreatorMsg todoCreatorCmd )
 
         TodoListMsg subMsg ->
             let
                 ( updatedTodoListModel, todoListCmd ) =
-                    TodoList.update subMsg (TodoList.ToDo 3 "item3") model.todoList
+                    TodoList.update subMsg (TodoList.ToDo 3 model.todoCreator.item) model.todoList
             in
                 ( { model | todoList = updatedTodoListModel }, Cmd.map TodoListMsg todoListCmd )
 
@@ -56,6 +60,6 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     Html.div []
-        [ Html.map TodoCreatorMsg (TodoCreator.view model.creator)
+        [ Html.map TodoCreatorMsg (TodoCreator.view model.todoCreator)
         , Html.map TodoListMsg (TodoList.view model.todoList) 
         ]

@@ -1,8 +1,8 @@
 module TodoCreator exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (value, type_)
 
 -- model
 type alias Item = 
@@ -10,18 +10,19 @@ type alias Item =
 
 type alias Model = 
     { item : Item
-    , current : Item
+    , inputStr : Item
     }
 
 initialModel : Model
 initialModel = 
     { item = ""
-    , current = ""
+    , inputStr = ""
     }
 
 type Msg
     = NoOp
-    | AddNew String
+    | UpdateInput String
+    | AddNew
 
 -- update
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -30,10 +31,23 @@ update message model =
         NoOp ->
             model ! []
 
-        AddNew s -> 
-            { model | current = s } ! []
+        UpdateInput s ->
+            { model | inputStr = s } ! []
+
+        AddNew -> 
+            { model | item = model.inputStr } ! []
 
 -- view
 view : Model -> Html Msg
 view model = 
-    div [] [ Html.text "sample" ]
+    div []
+        [ todoInput model
+        , text ("todo = " ++ model.inputStr)
+        ]
+
+todoInput : Model -> Html Msg
+todoInput model = 
+    form []
+        [ input [ onInput UpdateInput, value model.inputStr ] []
+        , input [ type_ "button", onClick AddNew, value "Add"] []
+        ]
