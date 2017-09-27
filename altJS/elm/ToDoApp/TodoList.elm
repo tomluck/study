@@ -6,7 +6,7 @@ import Html.Events exposing (onClick)
 
 -- model
 type alias ToDo = 
-    { count : Int
+    { done : Bool
     , item : String
     }
 
@@ -17,8 +17,9 @@ type alias Model =
 initialModel : Model
 initialModel = 
     { todoList = 
-        [ ToDo 1 "item1" 
-        , ToDo 2 "item2"
+        [ ToDo False "item1" 
+        , ToDo False "item2"
+        , ToDo False "item3"
         ]
     }
 
@@ -46,8 +47,8 @@ view model =
 viewList : List ToDo -> Html Msg
 viewList models = 
     div [ class "p2" ]
-    [ viewItems models
-    , updateButton models
+    [ updateButton models
+    , viewItems models
     ]
 
 viewItems : List ToDo -> Html Msg
@@ -63,4 +64,4 @@ viewItem model =
 updateButton : List ToDo -> Html Msg
 updateButton models = 
     div [] 
-        [ button [ onClick AddNew ] [ text "Click" ] ]
+        [ button [ onClick AddNew ] [ text "Add" ] ]

@@ -9,20 +9,17 @@ type alias Item =
     String
 
 type alias Model = 
-    { item : Item
-    , inputStr : Item
+    { inputStr : Item
     }
 
 initialModel : Model
 initialModel = 
-    { item = ""
-    , inputStr = ""
+    { inputStr = ""
     }
 
 type Msg
     = NoOp
     | UpdateInput String
-    | AddNew
 
 -- update
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,20 +31,15 @@ update message model =
         UpdateInput s ->
             { model | inputStr = s } ! []
 
-        AddNew -> 
-            { model | item = model.inputStr } ! []
-
 -- view
 view : Model -> Html Msg
 view model = 
     div []
         [ todoInput model
-        , text ("todo = " ++ model.inputStr)
         ]
 
 todoInput : Model -> Html Msg
 todoInput model = 
     form []
         [ input [ onInput UpdateInput, value model.inputStr ] []
-        , input [ type_ "button", onClick AddNew, value "Add"] []
         ]
