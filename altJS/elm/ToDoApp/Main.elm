@@ -1,9 +1,10 @@
 module Main exposing (..)
 
 import Html exposing (Html, program)
+import TodoCreator
 import TodoList
 
-main : Program Never AppModel Msg
+main : Program Never Model Msg
 main =
     program
         { init = init
@@ -13,42 +14,48 @@ main =
         }
 
 -- model
-type alias AppModel =
-    { todoListModel : TodoList.Model
+type alias Model = 
+    { creator : TodoCreator.Model
+    , todoList : TodoList.Model
     }
 
-initialModel : AppModel
+initialModel : Model
 initialModel = 
-    { todoListModel = TodoList.initialModel
+    { creator = TodoCreator.initialModel
+    , todoList = TodoList.initialModel
     }
 
-init : ( AppModel, Cmd Msg)
+init : ( Model, Cmd Msg)
 init = 
     ( initialModel, Cmd.none)
 
 type Msg
-    = TodoListMsg TodoList.Msg
+    = TodoCreatorMsg TodoCreator.Msg
+    | TodoListMsg TodoList.Msg
 
 -- update
-update : Msg -> AppModel -> ( AppModel, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update message model = 
     case message of
+        TodoCreatorMsg subMsg ->
+            model ! []
+
         TodoListMsg subMsg ->
             let
                 ( updatedTodoListModel, todoListCmd ) =
-                    TodoList.update subMsg (TodoList.ToDo 3 "item3") model.todoListModel
---                    TodoList.update subMsg model.todoListModel
+                    TodoList.update subMsg (TodoList.ToDo 3 "item3") model.todoList
             in
-                ( { model | todoListModel = updatedTodoListModel }, Cmd.map TodoListMsg todoListCmd )
+                ( { model | todoList = updatedTodoListModel }, Cmd.map TodoListMsg todoListCmd )
 
 -- subscription
-subscriptions : AppModel -> Sub Msg
+subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
 -- view
-view : AppModel -> Html Msg
+view : Model -> Html Msg
 view model =
     Html.div []
-        [ Html.map TodoListMsg (TodoList.view model.todoListModel) 
+        [ Html.map TodoCreatorMsg (TodoCreator.view model.creator)
+        , Html.map TodoListMsg (TodoList.view model.todoList) 
         ]
