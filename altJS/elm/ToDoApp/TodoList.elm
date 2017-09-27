@@ -41,15 +41,17 @@ update message todo model =
 view : Model -> Html Msg
 view model = 
     div []
-        [ viewList model.todoList
+        [
+        div [ class "p2" ]
+            [ addButton
+            , viewItems model.todoList
+            ]
         ]
 
-viewList : List ToDo -> Html Msg
-viewList models = 
-    div [ class "p2" ]
-    [ updateButton models
-    , viewItems models
-    ]
+addButton : Html Msg
+addButton = 
+    div [] 
+        [ button [ onClick AddNew ] [ text "Add" ] ]
 
 viewItems : List ToDo -> Html Msg
 viewItems models = 
@@ -60,8 +62,3 @@ viewItem model =
     li [] [
         text model.item
     ]
-
-updateButton : List ToDo -> Html Msg
-updateButton models = 
-    div [] 
-        [ button [ onClick AddNew ] [ text "Add" ] ]
