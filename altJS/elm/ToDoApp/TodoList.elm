@@ -51,6 +51,7 @@ view model =
         [
         div [ class "p2" ]
             [ addButton
+            , viewCounter model
             , viewList model
             ]
         ]
@@ -59,6 +60,23 @@ addButton : Html Msg
 addButton = 
     div [] 
         [ button [ onClick AddNew ] [ text "Add" ] ]
+
+viewCounter : Model -> Html Msg
+viewCounter model = 
+    div []
+        [ text ("Finished Task: " 
+            ++ toString ( countDoneItems model )
+            ++ "/" 
+            ++ toString ( List.length model.todoList ) ) 
+        ]
+
+countDoneItems : Model -> Int
+countDoneItems model = 
+    List.filter itemIsDone model.todoList
+    |> List.length
+
+itemIsDone : TodoModel -> Bool
+itemIsDone todoModel = todoModel.done 
 
 viewList : Model -> Html Msg
 viewList model = 
