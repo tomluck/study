@@ -25,6 +25,7 @@ initialModel =
 type Msg
     = NoOp
     | AddNew
+    | DeleteFinished
     | TodoMsg Todo.Msg
 
 -- update
@@ -36,6 +37,13 @@ update message todo model =
 
         AddNew -> 
             { model | todoList = model.todoList ++ [todo] } ! []
+
+        DeleteFinished -> 
+            let
+                itemIsNotFinished todoModel = not todoModel.done
+            in
+                { model | 
+                    todoList =  List.filter itemIsNotFinished model.todoList } ! []
 
         TodoMsg subMsg ->
             let
@@ -52,6 +60,7 @@ view model =
         div [ class "p2" ]
             [ addButton
             , viewCounter model
+            , deleteFinishedButton
             , viewList model
             ]
         ]
@@ -60,6 +69,11 @@ addButton : Html Msg
 addButton = 
     div [] 
         [ button [ onClick AddNew ] [ text "Add" ] ]
+
+deleteFinishedButton : Html Msg
+deleteFinishedButton = 
+    div [] 
+        [ button [ onClick DeleteFinished ] [ text "Delete Finished" ] ]
 
 viewCounter : Model -> Html Msg
 viewCounter model = 
