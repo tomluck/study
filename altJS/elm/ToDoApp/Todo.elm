@@ -1,6 +1,8 @@
 module Todo exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (style, type_)
+import Html.Events exposing (onClick)
 
 -- model
 type alias Model = 
@@ -22,22 +24,41 @@ new b s =
     
 type Msg
     = NoOp
-    | ToggleDone
+    | ToggleDone String
 
 -- update
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update message model =
     case message of
         NoOp ->
-            model ! []
+            model
 
-        ToggleDone -> 
-            model ! []
---            { model | done = not todo.done } ! []
+        ToggleDone s -> 
+            if s == model.item then
+                { model | done = not model.done }
+            else
+                model
 
 -- view
 view : Model -> Html Msg
 view model = 
-    li [] [
+    li [] 
+        [ 
+            checkbox (ToggleDone model.item) model
+        ]
+
+checkbox : msg -> Model -> Html msg
+checkbox msg model = 
+    label 
+        []
+        [ input [ type_ "checkbox", onClick msg ] []
+        , viewItem model
+        ]
+
+viewItem : Model -> Html msg
+viewItem model =
+    if model.done == False then
         text model.item
-    ]
+    else
+        span [ style [ ("color", "glay") ] ]
+             [ text model.item ]

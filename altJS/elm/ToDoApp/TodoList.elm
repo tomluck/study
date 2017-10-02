@@ -25,7 +25,6 @@ type Msg
     = NoOp
     | AddNew
     | TodoMsg Todo.Msg
---    | ToggleDone
 
 -- update
 update : Msg -> TodoModel -> Model -> ( Model, Cmd Msg )
@@ -38,9 +37,11 @@ update message todo model =
             { model | todoList = model.todoList ++ [todo] } ! []
 
         TodoMsg subMsg ->
-            model ! []
---        ToggleDone -> 
---            { model | done = not todo.done } ! []
+            let
+                updatedTodoList = 
+                    List.map (Todo.update subMsg) model.todoList
+            in
+                { model | todoList = updatedTodoList } ! []
 
 -- view
 view : Model -> Html Msg
