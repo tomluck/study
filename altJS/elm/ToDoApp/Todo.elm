@@ -1,7 +1,7 @@
 module Todo exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (style, type_)
+import Html.Attributes exposing (style, type_, checked)
 import Html.Events exposing (onClick)
 
 -- model
@@ -50,7 +50,8 @@ view model =
 checkbox : msg -> Model -> Html msg
 checkbox msg model = 
     label []
-        [ input [ type_ "checkbox", onClick msg ] []
+--        [ input [ type_ "checkbox", onClick msg ] []
+        [ input [ type_ "checkbox", checked model.done, onClick msg ] []
         , viewItem model
         ]
 
