@@ -15,9 +15,10 @@ type alias Model =
 initialModel : Model
 initialModel = 
     { todoList = 
-        [ Todo.new False "item1"
-        , Todo.new False "item2"
-        , Todo.new False "item3"
+        [ Todo.new False "task1"
+        , Todo.new False "task2"
+        , Todo.new True "task3"
+        , Todo.new False "task4"
         ]
     }
 
