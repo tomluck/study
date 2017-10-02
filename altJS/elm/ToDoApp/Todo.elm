@@ -49,8 +49,7 @@ view model =
 
 checkbox : msg -> Model -> Html msg
 checkbox msg model = 
-    label 
-        []
+    label []
         [ input [ type_ "checkbox", onClick msg ] []
         , viewItem model
         ]
@@ -60,5 +59,7 @@ viewItem model =
     if model.done == False then
         text model.item
     else
-        span [ style [ ("color", "glay") ] ]
-             [ text model.item ]
+        s [] 
+            [ span [ style [ ("color", "gray") ] ]
+                    [ text model.item ]
+            ]
