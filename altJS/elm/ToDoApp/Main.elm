@@ -48,7 +48,7 @@ update message model =
         TodoListMsg subMsg ->
             let
                 ( updatedTodoListModel, todoListCmd ) =
-                    TodoList.update subMsg (Todo.new False model.todoCreator.inputStr) model.todoList
+                    TodoList.update subMsg (Todo.new False model.todoCreator.inputStr False) model.todoList
             in
                 ( { model | todoList = updatedTodoListModel }, Cmd.map TodoListMsg todoListCmd )
 

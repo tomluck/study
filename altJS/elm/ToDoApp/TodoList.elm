@@ -15,10 +15,10 @@ type alias Model =
 initialModel : Model
 initialModel = 
     { todoList = 
-        [ Todo.new False "task1"
-        , Todo.new False "task2"
-        , Todo.new True "task3"
-        , Todo.new False "task4"
+        [ Todo.new False "task1" False
+        , Todo.new False "task2" False
+        , Todo.new True "task3" False
+        , Todo.new False "task4" False
         ]
     }
 
@@ -47,10 +47,14 @@ update message todo model =
 
         TodoMsg subMsg ->
             let
+                itemIsNotDeleted todoModel = 
+                    not todoModel.del
+                    
                 updatedTodoList = 
                     List.map (Todo.update subMsg) model.todoList
             in
-                { model | todoList = updatedTodoList } ! []
+                { model | 
+                    todoList = List.filter itemIsNotDeleted updatedTodoList } ! []
 
 -- view
 view : Model -> Html Msg
