@@ -11,13 +11,6 @@ type alias Model =
     , del  : Bool
     }
 
-initialModel : Model
-initialModel = 
-    { done = False
-    , item = ""
-    , del  = False
-    }
-
 new : Bool -> String -> Bool -> Model
 new do s de = 
     { done = do

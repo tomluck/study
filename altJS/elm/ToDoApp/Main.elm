@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html, program)
+import Html exposing (..)
 import TodoCreator
 import TodoList
 import Todo
@@ -60,7 +60,10 @@ subscriptions model =
 -- view
 view : Model -> Html Msg
 view model =
-    Html.div []
-        [ Html.map TodoCreatorMsg (TodoCreator.view model.todoCreator)
-        , Html.map TodoListMsg (TodoList.view model.todoList) 
-        ]
+    body [] 
+        [ h1 [] [ text "ToDo list" ]
+        , div [] 
+            [ map TodoCreatorMsg (TodoCreator.view model.todoCreator)
+            , map TodoListMsg (TodoList.view model.todoList) 
+            ]
+    ]
