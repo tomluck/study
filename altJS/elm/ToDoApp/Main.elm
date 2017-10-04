@@ -3,7 +3,6 @@ module Main exposing (..)
 import Html exposing (..)
 import TodoCreator
 import TodoList
-import Todo
 
 main : Program Never Model Msg
 main =
@@ -48,7 +47,7 @@ update message model =
         TodoListMsg subMsg ->
             let
                 ( updatedTodoListModel, todoListCmd ) =
-                    TodoList.update subMsg (Todo.new False model.todoCreator.inputStr False) model.todoList
+                    TodoList.update subMsg model.todoCreator.inputStr model.todoList
             in
                 ( { model | todoList = updatedTodoListModel }, Cmd.map TodoListMsg todoListCmd )
 

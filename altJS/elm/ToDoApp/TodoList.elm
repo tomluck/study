@@ -10,16 +10,18 @@ type alias TodoModel = Todo.Model
 
 type alias Model = 
     { todoList : List TodoModel
+    , nextID : Int
     }
 
 initialModel : Model
 initialModel = 
     { todoList = 
-        [ Todo.new False "task1" False
-        , Todo.new False "task2" False
-        , Todo.new True "task3" False
-        , Todo.new False "task4" False
+        [ Todo.new 1 False "task1" False
+        , Todo.new 2 False "task2" False
+        , Todo.new 3 True  "task3" False
+        , Todo.new 4 False "task4" False
         ]
+    , nextID = 5
     }
 
 type Msg
@@ -29,14 +31,21 @@ type Msg
     | TodoMsg Todo.Msg
 
 -- update
-update : Msg -> TodoModel -> Model -> ( Model, Cmd Msg )
-update message todo model =
+update : Msg -> String -> Model -> ( Model, Cmd Msg )
+update message item model =
     case message of
         NoOp ->
             model ! []
 
         AddNew -> 
-            { model | todoList = model.todoList ++ [todo] } ! []
+            let
+                todo = 
+                    Todo.new model.nextID False item False
+            in
+                { model | 
+                    todoList = model.todoList ++ [todo] 
+                    , nextID = model.nextID + 1
+                } ! []
 
         DeleteFinished -> 
             let

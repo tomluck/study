@@ -6,14 +6,16 @@ import Html.Events exposing (onClick)
 
 -- model
 type alias Model = 
-    { done : Bool
+    { id   : Int
+    , done : Bool
     , item : String
     , del  : Bool
     }
 
-new : Bool -> String -> Bool -> Model
-new do s de = 
-    { done = do
+new : Int -> Bool -> String -> Bool -> Model
+new id do s de = 
+    { id = id
+    , done = do
     , item = s
     , del = de
     }
