@@ -6,15 +6,15 @@ import Html.Events exposing (onClick)
 
 -- model
 type alias Model = 
-    { id   : Int
+    { itemID : Int
     , done : Bool
     , item : String
     , del  : Bool
     }
 
 new : Int -> Bool -> String -> Bool -> Model
-new id do s de = 
-    { id = id
+new itemID do s de = 
+    { itemID = itemID
     , done = do
     , item = s
     , del = de
@@ -22,8 +22,8 @@ new id do s de =
     
 type Msg
     = NoOp
-    | ToggleDone String
-    | OnDelete String
+    | ToggleDone Int
+    | OnDelete Int
 
 -- update
 update : Msg -> Model -> Model
@@ -32,14 +32,14 @@ update message model =
         NoOp ->
             model
 
-        ToggleDone s -> 
-            if s == model.item then
+        ToggleDone itemID -> 
+            if itemID == model.itemID then
                 { model | done = not model.done }
             else
                 model
 
-        OnDelete s -> 
-            if s == model.item then
+        OnDelete itemID -> 
+            if itemID == model.itemID then
                 { model | del = True }
             else
                 model
@@ -49,7 +49,7 @@ view : Model -> Html Msg
 view model = 
     li [] 
         [ 
-            checkbox (ToggleDone model.item) model
+            checkbox (ToggleDone model.itemID) model
         ]
 
 checkbox : Msg -> Model -> Html Msg
@@ -73,5 +73,5 @@ viewItem model =
 viewDeleteButton : Model -> Html Msg
 viewDeleteButton model =
     span []
-        [ button [ onClick (OnDelete model.item) ] [ text "x" ]
+        [ button [ onClick (OnDelete model.itemID) ] [ text "x" ]
         ]
